@@ -154,7 +154,7 @@
 													echo '<p><b>Owner: </b>'.$value['own'].'</p>';
 													echo '<p><b>Purpose: </b>'.$value['purpose'].'</p>';
 												}
-												echo '<p><b>Number of  Rooms: </b>'.$value['rooms'].'</p>';
+												echo '<p><b>Number of  Rooms: </b>'.$value['room no'].'</p>';
 													echo '<p><b>Address: </b>'.$value['address'].'</p>';
 														if ($value['image'] !== 'uploads/') {
 											 		# code...

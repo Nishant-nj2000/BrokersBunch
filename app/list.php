@@ -5,11 +5,11 @@
 
 		try {
 			if($_SESSION['role'] == 'broker'){
-				$stmt = $connect->prepare("SELECT * FROM room_rental_registrations_apartment  WHERE broker_id != {$_SESSION['broker_id']}");
+				$stmt = $connect->prepare("SELECT * FROM room_rental_registrations_apartment ap, broker b where b.broker_id =  ap.broker_id AND b.broker_id != {$_SESSION['broker_id']}");
 				$stmt->execute();
 				$data1 = $stmt->fetchALL(PDO::FETCH_ASSOC);
 				
-				$stmt = $connect->prepare(" SELECT * FROM room_rental_registrations  WHERE broker_id != {$_SESSION['broker_id']}");
+				$stmt = $connect->prepare(" SELECT * FROM room_rental_registrations ro, broker b where b.broker_id = ro.broker_id AND b.broker_id != {$_SESSION['broker_id']}");
 				$stmt->execute();
 				$data2 = $stmt->fetchALL(PDO::FETCH_ASSOC);
 
@@ -78,10 +78,10 @@
 									   echo 	'<div class="row">
 											<div class="col-4">
 											<h4 >Broker Details</h4>';
-											 	echo '<p><b>Broker Name: </b>'.$value['broker name'].'</p>';
-											 	echo '<p><b>Mobile Number: </b>'.$value['broker mobile'].'</p>';
+											 	echo '<p><b>Broker Name: </b>'.$value['fullname'].'</p>';
+											 	echo '<p><b>Mobile Number: </b>'.$value['mobile'].'</p>';
 											 	//echo '<p><b>Alternate Number: </b>'.$value['alternat_mobile'].'</p>';
-											 	echo '<p><b>Email: </b>'.$value['broker email'].'</p>';
+											 	echo '<p><b>Email: </b>'.$value['email'].'</p>';
 											 echo '<p><b> State: </b>'."Gujarat".'</p><p><b> City: </b>'."Ahmedabad".'</p><p><b>Area: </b>'."Naroda".'</p>';
 											 
 										
@@ -103,14 +103,14 @@
 														echo '<div class="alert alert-success" role="alert"><p><b>Apartment Name: </b>'.$value['apartment_name'].'</p></div>';
 
 													if(isset($value['ap_number_of_plats']))
-														echo '<div class="alert alert-success" role="alert"><p><b>Flat Number: </b>'.$value['ap_number_of_plats'].'</p></div>';
+														echo '<div class="alert alert-success" role="alert"><p><b>Flat Number: </b>'.$value['ap_number_of_flat'].'</p></div>';
 												if(isset($value['own'])){
 													echo '<p><b>Available Area: </b>'.$value['area'].'</p>';
 													echo '<p><b>Floor: </b>'.$value['floor'].'</p>';
 													echo '<p><b>Owner: </b>'.$value['own'].'</p>';
 													echo '<p><b>Purpose: </b>'.$value['purpose'].'</p>';
 												}
-												echo '<p><b>Number of  Rooms: </b>'.$value['rooms'].'</p>';
+												echo '<p><b>Number of  Rooms: </b>'.$value['room no'].'</p>';
 													echo '<p><b>Address: </b>'.$value['address'].'</p>';
 														if ($value['image'] !== 'uploads/') {
 											 		# code...
@@ -123,8 +123,8 @@
 
 											<div class="col-3">
 											<h4>Other Details</h4>';
-											echo '<p><b> State: </b>'."Gujarat".'</p><p><b> City: </b>'."Ahmedabad".'</p><p><b>Area: </b>'."Naroda".'</p>';
-											echo '<p><b>Amenities: </b>'.$value['amenities'].'</p>';
+											echo '<p><b> State: </b>'.$value['state'].'</p><p><b> City: </b>'.$value['city'].'</p><p><b>Area: </b>'.$value['address'].'</p>';
+											echo '<p><b>Amenities: </b>'.$value['accommodation'].'</p>';
 											echo '<p><b>Description: </b>'.$value['description'].'</p>';
 												if($value['vacant'] == 0){ 
 													echo '<div class="alert alert-danger" role="alert"><p><b>Sold</b></p></div>';

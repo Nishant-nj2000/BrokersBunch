@@ -5,7 +5,7 @@
 		if(isset($_POST['register'])) {
 			$name = $_POST['name'];
 			$cmp = $_POST['cmp'];
-			$username = $_POST['user_id'];
+			$username = $_POST['username'];
 			$fullname = $_POST['fullname'];
 			
 			try {
@@ -69,16 +69,19 @@
 			  		<div class="row">
 				  	    <div class="col-6">
 					  	  <div class="form-group">
-						    <label for="name">Apartment No/Name,  Room No/Name</label>
-						    <input type="text" class="form-control" id="name" placeholder="Full Name" name="name" required>
-						    <input type="hidden" name="user_id" value="<?php echo $_SESSION['username']; ?>">
-						    <input type="hidden" name="fullname" value="<?php echo $_SESSION['fullname']; ?>">
+						    <label for="name">Full Name</label>
+						    <input type="text" class="form-control" id="fullname" name="fullname" value="<?php echo $_SESSION['fullname']; ?>">
+
+							<br>	
+							<label for="name">UserName</label>				    
+						    <input type="text" class="form-control" name="username" value="<?php echo $_SESSION['username']; ?>" disabled>
+						    
 						  </div>
 						</div>
 						<div class="col-6">
 						  <div class="form-group">
 						    <label for="cmp">Feedback Message</label>
-						    <input type="text" class="form-control" id="cmp" placeholder="Text" name="cmp" required>
+						    <textarea placeholder="Text" class="form-control" id="cmp"  name="cmp" required></textarea>
 						  </div>
 					    </div>
 				   </div>
