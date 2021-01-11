@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.4
+-- version 5.0.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 04, 2018 at 11:23 AM
--- Server version: 5.7.14
--- PHP Version: 7.1.9
+-- Generation Time: Jan 11, 2021 at 04:23 PM
+-- Server version: 10.4.14-MariaDB
+-- PHP Version: 7.4.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -23,24 +24,33 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cmps`
+-- Table structure for table `broker`
 --
 
-
-CREATE TABLE `cmps` (
-  `id` int(11) NOT NULL,
-  `name` varchar(100) DEFAULT NULL,
-  `cmp` varchar(200) DEFAULT NULL,
-  `username` varchar(200) DEFAULT NULL,
-  `fullname` varchar(200) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+CREATE TABLE `broker` (
+  `broker_id` int(11) NOT NULL,
+  `state` varchar(20) NOT NULL,
+  `city` varchar(20) NOT NULL,
+  `address` varchar(200) NOT NULL,
+  `fullname` varchar(20) NOT NULL,
+  `gender` varchar(6) NOT NULL,
+  `mobile` int(10) NOT NULL,
+  `username` varchar(20) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `pan_card_no` varchar(10) NOT NULL,
+  `password` varchar(20) NOT NULL,
+  `registration_no` varchar(12) NOT NULL,
+  `profile_img` varchar(200) DEFAULT NULL,
+  `role` varchar(6) NOT NULL,
+  `status` enum('Active','Deactive','','') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `cmps`
+-- Dumping data for table `broker`
 --
 
-INSERT INTO `cmps` (`id`, `name`, `cmp`, `username`, `fullname`) VALUES
-(1, 'f', 'f', 'admin', 'Mahantesh Kumbar');
+INSERT INTO `broker` (`broker_id`, `state`, `city`, `address`, `fullname`, `gender`, `mobile`, `username`, `email`, `pan_card_no`, `password`, `registration_no`, `profile_img`, `role`, `status`) VALUES
+(3, 'Gujarat', 'Ahmedabad', 'Jai Hind Nagar Street no. 6 New Colony', 'Nishant Jain', 'Male', 2147483647, 'nishant27', 'nj27nishant@gmail.com', 'BRKPJ9087L', 'nishant27', 'AD2929292929', '\\app\\uploads\\profile\\broker6.jpg', 'broker', 'Active');
 
 -- --------------------------------------------------------
 
@@ -49,17 +59,14 @@ INSERT INTO `cmps` (`id`, `name`, `cmp`, `username`, `fullname`) VALUES
 --
 
 CREATE TABLE `room_rental_registrations` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `fullname` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` int(10) NOT NULL,
+  `owner fullname` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `mobile` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `alternat_mobile` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `country` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `state` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `city` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `landmark` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `rent` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `sale` varchar(190) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `deposit` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `plot_number` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `rooms` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -67,22 +74,18 @@ CREATE TABLE `room_rental_registrations` (
   `accommodation` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `image` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `open_for_sharing` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `other` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `vacant` int(1) NOT NULL DEFAULT '1',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `user_id` int(10) DEFAULT NULL
+  `vacant` int(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp(),
+  `broker_id` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `room_rental_registrations`
 --
 
-INSERT INTO `room_rental_registrations` (`id`, `fullname`, `mobile`, `alternat_mobile`, `email`, `country`, `state`, `city`, `landmark`, `rent`, `sale`, `deposit`, `plot_number`, `rooms`, `address`, `accommodation`, `description`, `image`, `open_for_sharing`, `other`, `vacant`, `created_at`, `updated_at`, `user_id`) VALUES
-(13, 'Rakesh Gupta', '8869498466', '', 'rakeshgupta@gmail.com', 'India', 'Gujarat', 'Ahmedabad', 'Nehru Bridge', '3', '12', '3', '78 nh', '2bhk', 'Yash Aqua Vijay Cross road', '4', 'Nice Property', 'uploads/ten1.jpg', NULL, 'zx', 0, '2018-02-16 12:21:43', '2018-02-16 12:21:43', 1),
-(14, 'Praveen Mehta', '2345676997', '', 'praveen_m@gmail.com', 'India', 'Gujarat', 'Rajkot', '', '1232', '12', '33333', '78 nh', '1bhk', 'port road ', '', 'Must See Property', 'uploads/ten2.jpg', NULL, NULL, 1, '2018-03-09 05:06:43', '2018-03-09 05:06:43', 2),
-(15, 'Maneesh Singhania', '8864795231', '', 'maneesh_s@gmail.com', 'India', 'Gujarat', 'Gandhinagar', 'Infocity', '1232', '12666', '33333', '78 nh', '1bhk', '78 Kalp Colony', 'wifi,pridge', 'Good to see', 'uploads/ten3.jpg', NULL, NULL, 1, '2018-04-04 11:19:09', '2018-04-04 11:19:09', 3);
+INSERT INTO `room_rental_registrations` (`id`, `owner fullname`, `mobile`, `email`, `state`, `city`, `landmark`, `rent`, `deposit`, `plot_number`, `rooms`, `address`, `accommodation`, `description`, `image`, `vacant`, `created_at`, `updated_at`, `broker_id`) VALUES
+(1, 'Rohan Gupta', '9743271826', 'Rohan.gupta@gmail.com', 'Gujarat', 'Ahmedabad', 'Navrangpura ', '100000', '10000', '101', '200', 'Infront of Bus stand', 'AC\r\nWiFi\r\nFridge', 'Nice Property', NULL, 1, '2021-01-11 14:56:20', '2021-01-11 14:56:20', 3);
 
 -- --------------------------------------------------------
 
@@ -92,42 +95,80 @@ INSERT INTO `room_rental_registrations` (`id`, `fullname`, `mobile`, `alternat_m
 
 CREATE TABLE `room_rental_registrations_apartment` (
   `id` int(10) UNSIGNED NOT NULL,
-  `fullname` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `owner fullname` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `mobile` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `alternat_mobile` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `country` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `state` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `city` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `landmark` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `rent` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `deposit` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `plot_number` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `apartment_name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ap_number_of_plats` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `rooms` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `floor` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `purpose` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `own` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `area` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `apartment_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ap_number_of_flat` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `rooms` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `floor` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `address` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `accommodation` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `image` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `open_for_sharing` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `other` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `vacant` int(1) NOT NULL DEFAULT '1',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `user_id` int(10) DEFAULT NULL
+  `vacant` int(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp(),
+  `broker_id` int(10) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `room_rental_registrations_apartment`
 --
 
-INSERT INTO `room_rental_registrations_apartment` (`id`, `fullname`, `mobile`, `alternat_mobile`, `email`, `country`, `state`, `city`, `landmark`, `rent`, `deposit`, `plot_number`, `apartment_name`, `ap_number_of_plats`, `rooms`, `floor`, `purpose`, `own`, `area`, `address`, `accommodation`, `description`, `image`, `open_for_sharing`, `other`, `vacant`, `created_at`, `updated_at`, `user_id`) VALUES
-(3, 'Devendra Kumar', '2345676567', '', 'devendra_k@gmail.com', 'India', 'Gujarat', 'Jamnagar', 'Iskon Tower', '1212', '22222', '78 nh', 'Mant Apartment', '101', '2bhk', '2nd', 'Residential', 'rented', '1sqr feet', 'port road bgm', 'wifi', 'Full furnished apartment with great hygiene', 'uploads/Apartment 1.jpg', NULL, NULL, 1, '2018-04-04 11:20:56', '2018-04-04 11:20:56', 1);
+INSERT INTO `room_rental_registrations_apartment` (`id`, `owner fullname`, `mobile`, `email`, `state`, `city`, `landmark`, `rent`, `deposit`, `plot_number`, `apartment_name`, `ap_number_of_flat`, `rooms`, `floor`, `address`, `accommodation`, `description`, `image`, `vacant`, `created_at`, `updated_at`, `broker_id`) VALUES
+(1, 'Mahesh Kumar', '9324132345', 'Mahesh.kumar@gmail.com', 'Gujarat', 'Ahmedabad', 'Dev Corporate', '200000', '20000', '402', 'Royal Apartment ', '4021', '221', '4', 'C G Road ', 'AC\r\nWiFi\r\nLaundry \r\nTelevision', 'Good Property', NULL, 1, '2021-01-11 15:04:15', '2021-01-11 15:04:15', 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `state`
+--
+
+CREATE TABLE `state` (
+  `state_id` int(11) NOT NULL,
+  `state_name` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `state`
+--
+
+INSERT INTO `state` (`state_id`, `state_name`) VALUES
+(1, 'Andhra Pradesh'),
+(2, 'Arunachal Pradesh'),
+(3, 'Assam'),
+(4, 'Bihar'),
+(5, 'Chhattisgarh'),
+(6, 'Goa'),
+(7, 'Gujarat'),
+(8, 'Haryana'),
+(9, 'Himachal Pradesh'),
+(10, 'Jharkhand'),
+(11, 'Karnataka'),
+(12, 'Kerala'),
+(13, 'Madhya Pradesh'),
+(14, 'Maharashtra'),
+(15, 'Manipur'),
+(16, 'Meghalaya'),
+(17, 'Mizoram'),
+(18, 'Nagaland'),
+(19, 'Odisha'),
+(20, 'Punjab'),
+(21, 'Rajasthan'),
+(22, 'Sikkim'),
+(23, 'Tamil Nadu'),
+(24, 'Telangana'),
+(25, 'Tripura'),
+(26, 'Uttar Pradesh'),
+(27, 'Uttarakhand'),
+(28, 'West Bengal');
 
 -- --------------------------------------------------------
 
@@ -136,192 +177,88 @@ INSERT INTO `room_rental_registrations_apartment` (`id`, `fullname`, `mobile`, `
 --
 
 CREATE TABLE `users` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `fullname` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `country` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `state` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `city` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `mobile` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `username` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `role` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT 'user',
-  `status` int(1) NOT NULL DEFAULT '1'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `user_id` int(11) NOT NULL,
+  `state` varchar(20) NOT NULL,
+  `city` varchar(20) NOT NULL,
+  `address` varchar(200) NOT NULL,
+  `fullname` varchar(20) NOT NULL,
+  `gender` varchar(7) NOT NULL,
+  `mobile` int(10) NOT NULL,
+  `username` varchar(20) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(20) NOT NULL,
+  `profile_img` varchar(200) DEFAULT NULL,
+  `role` varchar(10) NOT NULL,
+  `status` enum('Active','Inactive','','') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `fullname`,`country`, `state`,`city`, `mobile`, `username`, `email`, `password`, `created_at`, `updated_at`, `role`, `status`) VALUES
-(1, 'ADMIN','India','Gujarat','Ahmedabad', '9879879787', 'admin', 'admin@admin.com', '21232f297a57a5a743894a0e4a801fc3', NULL, NULL, 'admin', 1),
-(2, 'Mahantesh Kumar', 'India','Gujarat','Gandhinagar', '5645654565', 'manu', 'mant1@gmail.com', '9aee390f19345028f03bb16c588550e1', '2018-02-08 06:53:53', '2018-02-08 06:53:53', 'user', 1),
-(3, 'Robert','India','Gujarat','Rajkot', '1234567890', 'abcde', 'abc@gmail.com', 'ab56b4d92b40713acc5af89985d4b786', '2020-01-04 16:20:56', '2020-01-04 16:20:56', 'user', 1);
-
-
--- ---------------------------------------------------------
-
-
-
---
--- Table structure for table `broker`
---
-
-CREATE TABLE `broker` (
-  `id` int(10) UNSIGNED NOT NULL ,
-`area_id` int(10) UNSIGNED NOT NULL,
-`country` varchar(10) NOT NULL,
-`state` varchar(10) NOT NULL,
-`city` varchar(20) NOT NULL,
-  `fullname` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `mobile` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `username` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-`certificate_img` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-`registration_no` varchar(12) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-`role` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT 'broker',
-  `status` int(1) NOT NULL DEFAULT '1'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-
---
--- Dumping data for table `broker`
---
-
-INSERT INTO `broker` (`id`, `area_id`,`country`, `state`, `city`, `fullname`, `mobile`, `username`, `email`, `password`, `certificate_img`,`registration_no`, `created_at`, `updated_at`, `role`, `status`) VALUES
-(1, 1, 'India','Gujarat', 'Ahmedabad', 'Manish', '9521681348', 'broker', 'broker1@broker.com', 'e99a18c428cb38d5f260853678922e03', 'NULL' , 'G10000000012',' 2019-12-15 14:22:57 ', '2019-12-15 14:22:57', 'broker', 1);
-
-INSERT INTO `broker` (`id`, `area_id`,`country`, `state`, `city`, `fullname`, `mobile`, `username`, `email`, `password`, `certificate_img`,`registration_no`, `created_at`, `updated_at`, `role`, `status`) VALUES
-(2, 2, 'India','Gujarat', 'Rajkot', 'Yash', '9511515458', 'broker2', 'broker2@broker.com', 'e99a18c428cb38d5f260853678922e03', 'NULL' , 'G10000000016',' 2019-10-10 10:20:59 ', '2019-10-10 14:22:57', 'broker', 1);
-
-INSERT INTO `broker` (`id`, `area_id`,`country`, `state`, `city`, `fullname`, `mobile`, `username`, `email`, `password`, `certificate_img`,`registration_no`, `created_at`, `updated_at`, `role`, `status`) VALUES
-(3, 3, 'India','Gujarat', 'Gandhinagar', 'Rakesh', '9528981348', 'broker3', 'broker3@broker.com', 'e99a18c428cb38d5f260853678922e03', 'NULL' , 'G10000000019',' 2020-09-9 9:20:40', '2019-09-11 14:22:57', 'broker', 1);
-
--- ---------------------------------------------------------
-
-
-
---
--- Table structure for table `appt`
---
-
-CREATE TABLE `appt` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `username` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `adate`text NOT NULL ,
-  `atime` text NOT NULL ,
-  `phone` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL
-
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-
---
--- Dumping data for table `appt`
---
-
-INSERT INTO `appt` (`id`, `username`, `phone`, `email`, `adate`, `atime`) VALUES
-(1, 'Neeraj', '9541264468', 'client1@client.com', ' 2020-2-15', '14:22 pm ');
-
-INSERT INTO `appt` (`id`, `username`, `phone`, `email`, `adate`, `atime`) VALUES
-(2, 'Prince', '9521265544', 'client2@client.com', ' 2020-1-10', '06:20 pm ');
-
-
-INSERT INTO `appt` (`id`, `username`, `phone`, `email`, `adate`, `atime`) VALUES
-(3, 'abcde', '9845545544', 'client3@client.com', ' 2020-3-12', '10:00 am ');
-
--- -------------------------------------------------------
-
-
-
-
-
+INSERT INTO `users` (`user_id`, `state`, `city`, `address`, `fullname`, `gender`, `mobile`, `username`, `email`, `password`, `profile_img`, `role`, `status`) VALUES
+(1, 'NULL', 'NULL', 'NULL', 'ADMIN', 'Male', 0, 'Admin', 'Admin.BrokersBunch@gmail.com', 'Admin', '', 'Admin', 'Active'),
+(2, 'Rajasthan', 'Dungarpur', 'Jai Hind Nagar Street no. 6 New Colony', 'Nishant Jain', 'Male', 2147483647, 'nishant2000', 'nishant.nj4@gmail.co', 'nishant2000', '', 'user', 'Active');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `cmps`
+-- Indexes for table `broker`
 --
-ALTER TABLE `cmps`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `broker`
+  ADD PRIMARY KEY (`broker_id`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD UNIQUE KEY `mobile` (`mobile`);
 
 --
 -- Indexes for table `room_rental_registrations`
 --
 ALTER TABLE `room_rental_registrations`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `room_rental_registrations_mobile_unique` (`mobile`),
-  ADD UNIQUE KEY `room_rental_registrations_email_unique` (`email`);
+  ADD UNIQUE KEY `email` (`email`),
+  ADD KEY `broker_id` (`broker_id`),
+  ADD KEY `broker_id_2` (`broker_id`);
 
 --
 -- Indexes for table `room_rental_registrations_apartment`
 --
 ALTER TABLE `room_rental_registrations_apartment`
-  ADD PRIMARY KEY (`id`);
+  ADD UNIQUE KEY `email` (`email`),
+  ADD KEY `broker_id` (`broker_id`);
+
+--
+-- Indexes for table `state`
+--
+ALTER TABLE `state`
+  ADD PRIMARY KEY (`state_id`),
+  ADD UNIQUE KEY `state_name` (`state_name`);
 
 --
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `users_email_unique` (`email`),
-  ADD UNIQUE KEY `users_mobile_unique` (`mobile`),
-  ADD UNIQUE KEY `users_username_unique` (`username`);
-
-
-
---
--- Indexes for table `broker`
---
-
-ALTER TABLE `broker`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `broker_email_unique` (`email`),
-  ADD UNIQUE KEY `broker_mobile_unique` (`mobile`),
-  ADD UNIQUE KEY `broker_username_unique` (`username`),
-  ADD UNIQUE KEY `broker_area_id_unique` (`area_id`);
-
-
+  ADD PRIMARY KEY (`user_id`),
+  ADD UNIQUE KEY `mobile` (`mobile`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `cmps`
+-- AUTO_INCREMENT for table `broker`
 --
-ALTER TABLE `cmps`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `room_rental_registrations`
---
-ALTER TABLE `room_rental_registrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
---
--- AUTO_INCREMENT for table `room_rental_registrations_apartment`
---
-ALTER TABLE `room_rental_registrations_apartment`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+ALTER TABLE `broker`
+  MODIFY `broker_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
-
---
--- AUTO_INCREMENT for table `broker`
---
-
-ALTER TABLE `broker`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
