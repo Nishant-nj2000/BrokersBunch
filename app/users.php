@@ -34,7 +34,7 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav text-uppercase ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="login.php"><?php echo $_SESSION['fullname']; ?> <?php if($_SESSION['role'] == 'admin'){ echo "(Admin)"; } ?></a>
+              <a class="nav-link" href="login.php"><?php echo $_SESSION['u_fullname']; ?> <?php if($_SESSION['role'] == 'admin'){ echo "(Admin)"; } ?></a>
             </li>
             <li class="nav-item">
               <a href="../auth/logout.php" class="nav-link">Logout</a>
@@ -74,8 +74,8 @@
 					  			# code...				  			
 							   echo '<tr>';
 							      echo '<td>'.$value['user_id'].'</td>';
-							      echo '<td>'.$value['fullname'].'</td>';
-							      echo '<td>'.$value['email'].'</td>';
+							      echo '<td>'.$value['u_fullname'].'</td>';
+							      echo '<td>'.$value['u_email'].'</td>';
 							      echo '<td>'.$value['username'].'</td>';
 							      echo '<td>'.$value['role'].'</td>';
 							      // echo '<td></td>';

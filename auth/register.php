@@ -27,7 +27,7 @@
 				
 				
 						
-				$stmt = $connect->prepare('INSERT INTO broker (state, city, address, fullname, gender,  mobile, username, email, pan_card_no, password,  registration_no, role) VALUES (:state, :city, :address, :fullname, :gender,  :mobile, :username, :email, :pancard, :password, :registration_no, :role)');
+				$stmt = $connect->prepare('INSERT INTO broker (bstate, bcity, address, fullname, gender,  mobile, username, email, pan_card_no, password,  registration_no, role) VALUES (:state, :city, :address, :fullname, :gender,  :mobile, :username, :email, :pancard, :password, :registration_no, :role)');
 				$stmt->execute(array(
 					':state' => $state,
 					':city' => $city,
@@ -71,7 +71,7 @@
 					
 
 
-				$stmt = $connect->prepare('INSERT INTO users (state, city, address, fullname, gender, mobile, username, email, password, role) VALUES (:state, :city, :address, :fullname, :gender, :mobile, :username, :email, :password, :role)');
+				$stmt = $connect->prepare('INSERT INTO users (state, city, address, u_fullname, gender, u_mobile, username, u_email, password, role) VALUES (:state, :city, :address, :fullname, :gender, :mobile, :username, :email, :password, :role)');
 				$stmt->execute(array(
 					':state' => $state,
 					':city' => $city,

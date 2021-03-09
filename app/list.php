@@ -5,11 +5,11 @@
 
 		try {
 			if($_SESSION['role'] == 'broker'){
-				$stmt = $connect->prepare("SELECT * FROM room_rental_registrations_apartment ap, broker b where b.broker_id =  ap.broker_id AND b.broker_id != {$_SESSION['broker_id']}");
+				$stmt = $connect->prepare("SELECT * FROM apartments ap, broker b where b.broker_id =  ap.broker_id AND b.broker_id != {$_SESSION['broker_id']}");
 				$stmt->execute();
 				$data1 = $stmt->fetchALL(PDO::FETCH_ASSOC);
 				
-				$stmt = $connect->prepare(" SELECT * FROM room_rental_registrations ro, broker b where b.broker_id = ro.broker_id AND b.broker_id != {$_SESSION['broker_id']}");
+				$stmt = $connect->prepare(" SELECT * FROM tenaments t, broker b where b.broker_id = t.broker_id AND b.broker_id != {$_SESSION['broker_id']}");
 				$stmt->execute();
 				$data2 = $stmt->fetchALL(PDO::FETCH_ASSOC);
 
@@ -110,7 +110,7 @@
 													echo '<p><b>Owner: </b>'.$value['own'].'</p>';
 													echo '<p><b>Purpose: </b>'.$value['purpose'].'</p>';
 												}
-												echo '<p><b>Number of  Rooms: </b>'.$value['room no'].'</p>';
+												echo '<p><b>Total Rooms: </b>'.$value['total_rooms'].'</p>';
 													echo '<p><b>Address: </b>'.$value['address'].'</p>';
 														if ($value['image'] !== 'uploads/') {
 											 		# code...

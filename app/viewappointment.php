@@ -6,16 +6,16 @@
 
 		try {
 			if($_SESSION['role'] == 'broker' ){
-				$stmt = $connect->prepare("SELECT * FROM appt  WHERE broker_id = '{$_SESSION['broker_id']}'");
+				$stmt = $connect->prepare("SELECT * FROM appt a, users u, broker b where u.user_id = a.user_id AND b.broker_id = a.broker_id AND a.broker_id = '{$_SESSION['broker_id']}'");
 				$stmt->execute();
 				$data1 = $stmt->fetchAll (PDO::FETCH_ASSOC);
 
 
 
 			}
-				try {
+		try {
 			if($_SESSION['role'] == 'user' ){
-				$stmt = $connect->prepare("SELECT * FROM appt WHERE user_id = '{$_SESSION['user_id']}'");
+				$stmt = $connect->prepare("SELECT * FROM appt a, users u, broker b where u.user_id = a.user_id AND b.broker_id = a.broker_id AND a.user_id = '{$_SESSION['user_id']}'");
 				$stmt->execute();
 				$data1 = $stmt->fetchAll (PDO::FETCH_ASSOC);
 			}
@@ -45,7 +45,27 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav text-uppercase ml-auto">
            <li class="nav-item">
-              <a class="nav-link" href="#"><?php echo $_SESSION['fullname']; ?> <?php if($_SESSION['role'] == 'admin'){ echo "(Admin)"; } elseif($_SESSION['role'] == 'broker'){ echo "(Broker)";} ?></a>
+              <a class="nav-link" href="#"><?php 
+              		if($_SESSION['role'] == 'user' OR  $_SESSION['role'] =='admin')
+              		{
+              			echo $_SESSION['u_fullname'];
+              		} 
+              		elseif ($_SESSION['role'] == 'broker') 
+              		{
+              			echo $_SESSION['fullname'];
+              		} 
+              	?> 
+
+              	<?php 
+              		if($_SESSION['role'] == 'admin')
+              			{ 
+              				echo "(Admin)"; 
+              			} 
+              		elseif($_SESSION['role'] == 'broker')
+              			{ 
+              				echo "(Broker)";
+              			} 
+              	?></a>
             </li>
             <li class="nav-item">
               <a href="../auth/logout.php" class="nav-link">Logout</a>
@@ -83,8 +103,8 @@
 											 	
 											 	// echo '<p><b>Username: </b>'.$value['username'].'</p>';
 											 	// echo '<p><b>Email: </b>'.$value['email'].'</p>';
-											 	echo '<p><b>Appointment Date: </b>'.$value['adate'].'</p>';
-										 		echo '<p><b>Appointment Time: </b>'.$value['atime'].'</p>';
+											 	echo '<p><b>Appointment Date: </b>'.$value['Date'].'</p>';
+										 		echo '<p><b>Appointment Time: </b>'.$value['Time'].'</p>';
 										 	
 										 	
 											 	
@@ -97,8 +117,8 @@
 											 	// echo '<p><b>Username: </b>'.$value['username'].'</p>';
 											 	// echo '<p><b>Email: </b>'.$value['email'].'</p>';
 											 
-										 		echo '<p><b>Client Mobile: </b>'.$value['mobile'].'</p>';
-										 		echo '<p><b>Client Email: </b>'.$value['email'].'</p>';
+										 		echo '<p><b>Client Mobile: </b>'.$value['u_mobile'].'</p>';
+										 		echo '<p><b>Client Email: </b>'.$value['u_email'].'</p>';
 										 		echo '<p><b>Client Name: </b>'.$value['username'].'</p>';
 										 		
 										 			
@@ -144,7 +164,7 @@
 
 				elseif($_SESSION['role'] == 'user' ){
 
-						$stmt = $connect->prepare("SELECT * FROM room_rental_registrations WHERE broker_id IN (SELECT broker_id FROM appt WHERE user_id = '{$_SESSION['user_id']}')");
+						$stmt = $connect->prepare("SELECT * FROM apartments,users WHERE broker_id IN (SELECT broker_id FROM appt WHERE user_id = '{$_SESSION['user_id']}')");
 						$stmt->execute();
 						$data9 = $stmt->fetchAll (PDO::FETCH_ASSOC);
 
@@ -166,10 +186,9 @@
 											 	
 											 	//echo '<p><b>Username: </b>'.$value['username'].'</p>';
 											 	//echo '<p><b>Email: </b>'.$value['email'].'</p>';
-											 	echo '<p><b>Appointment Date: </b>'.$value['adate'].'</p>';
-										 		echo '<p><b>Appointment Time: </b>'.$value['atime'].'</p>';
-										 		echo '<p><b>Mobile: </b>'.$value['mobile'].'</p>';
-										 		echo '<p><b>Email: </b>'.$value['email'].'</p>';
+											 	echo '<p><b>Appointment Date: </b>'.$value['Date'].'</p>';
+										 		echo '<p><b>Appointment Time: </b>'.$value['Time'].'</p>';
+										 		
 										 	
 											 	
 											 	
@@ -182,9 +201,9 @@
 											 	
 											 	//echo '<p><b>Username: </b>'.$value['username'].'</p>';
 											 	//echo '<p><b>Email: </b>'.$value['email'].'</p>';
-											 	echo '<p><b>Broker Name: </b>'."Saumya vyas".'</p>';
-										 		echo '<p><b>Mobile: </b>'."8945712456".'</p>';
-										 		echo '<p><b>Email: </b>'."saumya@gmail.com".'</p>';
+											 	echo '<p><b>Broker Name: </b>'.$value['fullname'].'</p>';
+										 		echo '<p><b>Mobile: </b>'.$value['mobile'].'</p>';
+										 		echo '<p><b>Email: </b>'.$value['email'].'</p>';
 										 	
 											 	
 											 	

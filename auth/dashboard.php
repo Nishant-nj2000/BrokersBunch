@@ -10,11 +10,11 @@
 
 		
 
-		$stmt = $connect->prepare('SELECT count(*) as total_rent FROM room_rental_registrations');
+		$stmt = $connect->prepare('SELECT count(*) as total_rent FROM tenaments');
 		$stmt->execute();
 		$total_rent = $stmt->fetch(PDO::FETCH_ASSOC);
 
-		$stmt = $connect->prepare('SELECT count(*) as total_rent_apartment FROM room_rental_registrations_apartment');
+		$stmt = $connect->prepare('SELECT count(*) as total_rent_apartment FROM apartments');
 		$stmt->execute();
 		$total_rent_apartment = $stmt->fetch(PDO::FETCH_ASSOC);
 	}
@@ -43,8 +43,30 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav text-uppercase ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="#"><?php echo $_SESSION['fullname']; ?> <?php if($_SESSION['role'] == 'admin'){ echo "(Admin)"; } elseif($_SESSION['role'] == 'broker'){ echo "(Broker)";} ?></a>
-            </li>
+              <a class="nav-link" href="#">
+              	<?php 
+              		if($_SESSION['role'] == 'user' OR  $_SESSION['role'] =='admin')
+              		{
+              			echo $_SESSION['u_fullname'];
+              		} 
+              		elseif ($_SESSION['role'] == 'broker') 
+              		{
+              			echo $_SESSION['fullname'];
+              		} 
+              	?> 
+
+              	<?php 
+              		if($_SESSION['role'] == 'admin')
+              			{ 
+              				echo "(Admin)"; 
+              			} 
+              		elseif($_SESSION['role'] == 'broker')
+              			{ 
+              				echo "(Broker)";
+              			} 
+              	?>
+              </a>
+            </li>1
             <li class="nav-item">
               <a href="logout.php" class="nav-link">Logout</a>
             </li>
@@ -61,11 +83,23 @@
 			<!-- <div class="row"> -->
 				<div class="col-md-12"><br>
 					
-					<?php if($_SESSION['role'] == 'admin' or $_SESSION['role'] == 'broker'){ print"<h1>"; print $_SESSION['fullname']; print"'s "; print "Dashboard </h1>"; } ?><br><br>
-					<?php if($_SESSION['role'] == 'admin' or $_SESSION['role'] == 'broker') {print "<h3> Welcome "; print $_SESSION['fullname']; print "</h3>"; } ?>
-					<?php if($_SESSION['role'] == 'user') {print "<h1> Welcome "; print $_SESSION['fullname']; print "</h1>"; } ?>
+					<?php 
+						if($_SESSION['role'] == 'admin' or $_SESSION['role'] == 'user')
+						{ 
+							print"<h1>"; print $_SESSION['u_fullname']; print"'s "; print "Dashboard </h1>"; 
+							echo '<br><br>';
+							print "<h3> Welcome "; print $_SESSION['u_fullname']; print "</h3>"; 
+						} 
+					?>
 					
-					 <br>
+					<?php 
+						if($_SESSION['role'] == 'broker') 
+						{
+							print"<h1>"; print $_SESSION['fullname']; print"'s "; print "Dashboard </h1>"; 
+							echo '<br><br>';
+							print "<h3> Welcome "; print $_SESSION['fullname']; print "</h3>";
+						} 
+					?>
 
 					<div class="row">						
 						<?php 
@@ -80,7 +114,7 @@
 						 <?php 
 							if($_SESSION['role'] == 'admin'){ 
 								echo '<div class="col-md-3">';
-								echo '<a href="../app/list_rooms.php"><div class="alert alert-warning" role="alert">';
+								echo '<a href="../app/list_tenaments.php"><div class="alert alert-warning" role="alert">';
 								echo '<b>Registered tenaments <span class="badge badge-pill badge-success">'.(intval($total_rent['total_rent'])).'</span></b>';
 								echo '</div></a>';
 								echo '</div>';
@@ -112,7 +146,7 @@
 						<?php 
 							if($_SESSION['role'] == 'broker'){ 
 								echo '<div class="col-md-3">';
-								echo '<a href="../app/list_rooms.php"><div class="alert alert-warning" role="alert">';
+								echo '<a href="../app/list_tenaments.php"><div class="alert alert-warning" role="alert">';
 								echo '<b>Registered tenaments <span class="badge badge-pill badge-success">'.(intval($total_rent['total_rent'])).'</span> </b>';
 								echo '</div></a>';
 								echo '</div>';

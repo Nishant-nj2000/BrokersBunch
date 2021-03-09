@@ -9,7 +9,7 @@
 		$password = $_POST['password'];
 		
 		try {
-			$stmt = $connect->prepare('SELECT * FROM users WHERE username = :username or email = :email ');
+			$stmt = $connect->prepare('SELECT * FROM users WHERE username = :username or u_email = :email ');
 			$stmt->execute(array(
 				':username' => $username,
 				':email' => $email
@@ -23,10 +23,10 @@
 				if(	$password == $data['password']) {
 					$_SESSION['user_id'] = $data['user_id'];
 					$_SESSION['username'] = $data['username'];
-					$_SESSION['fullname'] = $data['fullname'];
+					$_SESSION['u_fullname'] = $data['u_fullname'];
 					$_SESSION['role'] = $data['role'];
-					$_SESSION['mobile'] = $data['mobile'];
-					$_SESSION['email'] = $data['email'];
+					$_SESSION['u_mobile'] = $data['u_mobile'];
+					$_SESSION['u_email'] = $data['u_email'];
 					
 					
 					header('Location: dashboard.php');

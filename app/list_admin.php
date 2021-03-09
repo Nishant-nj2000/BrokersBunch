@@ -5,28 +5,12 @@
 
 		try {
 			if($_SESSION['role'] == 'admin'){
-				$stmt = $connect->prepare('SELECT * FROM room_rental_registrations_apartment');
+				$stmt = $connect->prepare('SELECT * FROM apartments a, broker b where b.broker_id =  a.broker_id');
 				$stmt->execute();
 				$data1 = $stmt->fetchAll (PDO::FETCH_ASSOC);
 
-				$stmt = $connect->prepare('SELECT * FROM room_rental_registrations');
+				$stmt = $connect->prepare('SELECT * FROM tenaments t, broker b where b.broker_id = t.broker_id');
 				$stmt->execute();
-				$data2 = $stmt->fetchAll (PDO::FETCH_ASSOC);
-
-				$data = array_merge($data1,$data2);
-			}
-
-			if($_SESSION['role'] == 'user'){
-				$stmt = $connect->prepare('SELECT * FROM room_rental_registrations_apartment WHERE :user_id = user_id ');
-				$stmt->execute(array(
-					':user_id' => $_SESSION['user_id']
-				));
-				$data1 = $stmt->fetchAll (PDO::FETCH_ASSOC);
-
-				$stmt = $connect->prepare('SELECT * FROM room_rental_registrations WHERE :user_id = user_id ');
-				$stmt->execute(array(
-					':user_id' => $_SESSION['user_id']
-				));
 				$data2 = $stmt->fetchAll (PDO::FETCH_ASSOC);
 
 				$data = array_merge($data1,$data2);
@@ -53,7 +37,7 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav text-uppercase ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="#"><?php echo $_SESSION['fullname']; ?> <?php if($_SESSION['role'] == 'admin'){ echo "(Admin)"; } ?></a>
+              <a class="nav-link" href="#"><?php echo $_SESSION['u_fullname']; ?> <?php if($_SESSION['role'] == 'admin'){ echo "(Admin)"; } ?></a>
             </li>
             <li class="nav-item">
               <a href="../auth/logout.php" class="nav-link">Logout</a>
@@ -82,14 +66,14 @@
 					foreach ($data as $key => $value) {						
 						echo '<div class="card card-inverse card-info mb-3" style="padding:1%;">					
 								  <div class="card-block">';
-								  	echo '<a class="btn btn-warning float-right" href="update.php?id='.$value['id'].'&act=';if(!empty($value['own'])){ echo "ap"; }else{ echo "indi"; } echo '">Edit status</a>'; 
+								  	echo '<a class="btn btn-warning float-right" href="update.php?id='.$value['a_id'].'&act=';if(!empty($value['own'])){ echo "ap"; }else{ echo "indi"; } echo '">Edit status</a>';
+
 									 echo 	'<div class="row">
 											<div class="col-4">
 											<h4> Broker Details </h4>';
-											 	echo '<p><b>Owner Name: </b>'.$value['broker name'].'</p>';
-											 	echo '<p><b>Mobile Number: </b>'.$value['broker mobile'].'</p>';
-											 	echo '<p><b>Alternate Number: </b>'.$value['alternat_mobile'].'</p>';
-											 	echo '<p><b>Email: </b>'.$value['broker email'].'</p>';
+											 	echo '<p><b>Owner Name: </b>'.$value['fullname'].'</p>';
+											 	echo '<p><b>Mobile Number: </b>'.$value['mobile'].'</p>';
+											 	echo '<p><b>Email: </b>'.$value['email'].'</p>';
 											 	echo '<p><b> State: </b>'."Gujarat".'</p><p><b> City: </b>'."Ahmedabad".'</p><p><b>Area: </b>'."Maninagar".'</p>';
 
 											 
@@ -114,7 +98,7 @@
 													echo '<p><b>Owner/Rented: </b>'.$value['own'].'</p>';
 													echo '<p><b>Purpose: </b>'.$value['purpose'].'</p>';
 												}
-												echo '<p><b>Available Rooms: </b>'.$value['rooms'].'</p>';
+												echo '<p><b>Total Rooms: </b>'.$value['total_rooms'].'</p>';
 											if ($value['image'] !== 'uploads/') {
 											 		# code...
 
@@ -123,7 +107,7 @@
 										echo '</div>
 											<div class="col-3">
 											<h4>Other Details</h4>';
-											echo '<p><b>Amenities: </b>'.$value['amenities'].'</p>';
+											echo '<p><b>Amenities: </b>'.$value['accommodation'].'</p>';
 											echo '<p><b>Description: </b>'.$value['description'].'</p>';
 												if($value['vacant'] == 0){ 
 													echo '<div class="alert alert-danger" role="alert"><p><b>Sold</b></p></div>';

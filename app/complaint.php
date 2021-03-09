@@ -40,7 +40,27 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav text-uppercase ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="#"><?php echo $_SESSION['fullname']; ?> <?php if($_SESSION['role'] == 'admin'){ echo "(Admin)"; } elseif($_SESSION['role'] == 'broker'){ echo "(Broker)";} ?></a>
+              <a class="nav-link" href="#"><?php 
+              		if($_SESSION['role'] == 'user' OR  $_SESSION['role'] =='admin')
+              		{
+              			echo $_SESSION['u_fullname'];
+              		} 
+              		elseif ($_SESSION['role'] == 'broker') 
+              		{
+              			echo $_SESSION['fullname'];
+              		} 
+              	?> 
+
+              	<?php 
+              		if($_SESSION['role'] == 'admin')
+              			{ 
+              				echo "(Admin)"; 
+              			} 
+              		elseif($_SESSION['role'] == 'broker')
+              			{ 
+              				echo "(Broker)";
+              			} 
+              	?></a>
             </li>
             <li class="nav-item">
               <a href="../auth/logout.php" class="nav-link">Logout</a>
@@ -70,7 +90,7 @@
 				  	    <div class="col-6">
 					  	  <div class="form-group">
 						    <label for="name">Full Name</label>
-						    <input type="text" class="form-control" id="fullname" name="fullname" value="<?php echo $_SESSION['fullname']; ?>">
+						    <input type="text" class="form-control" id="fullname" name="fullname" value="<?php if($_SESSION['role'] == 'user'){echo $_SESSION['u_fullname'];} else {echo $_SESSION['fullname'];} ?>">
 
 							<br>	
 							<label for="name">UserName</label>				    

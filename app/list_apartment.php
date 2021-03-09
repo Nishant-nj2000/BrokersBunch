@@ -5,7 +5,7 @@
 
 		try {
 			if($_SESSION['role'] == 'admin' or $_SESSION['role'] == 'broker' ){
-				$stmt = $connect->prepare('SELECT * FROM room_rental_registrations_apartment');
+				$stmt = $connect->prepare('SELECT * FROM apartments ap, broker b where b.broker_id = ap.broker_id');
 				$stmt->execute();
 				$data1 = $stmt->fetchAll (PDO::FETCH_ASSOC);
 			}
@@ -47,7 +47,27 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav text-uppercase ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="#"><?php echo $_SESSION['fullname']; ?> <?php if($_SESSION['role'] == 'admin'){ echo "(Admin)"; }elseif($_SESSION['role'] == 'broker'){ echo "(Broker)";} ?></a>
+              <a class="nav-link" href="#"><?php 
+              		if($_SESSION['role'] == 'user' OR  $_SESSION['role'] =='admin')
+              		{
+              			echo $_SESSION['u_fullname'];
+              		} 
+              		elseif ($_SESSION['role'] == 'broker') 
+              		{
+              			echo $_SESSION['fullname'];
+              		} 
+              	?> 
+
+              	<?php 
+              		if($_SESSION['role'] == 'admin')
+              			{ 
+              				echo "(Admin)"; 
+              			} 
+              		elseif($_SESSION['role'] == 'broker')
+              			{ 
+              				echo "(Broker)";
+              			} 
+              	?></a>
             </li>
             <li class="nav-item">
               <a href="../auth/logout.php" class="nav-link">Logout</a>
@@ -80,16 +100,15 @@
 								  	
 
 								  if($_SESSION['role'] == 'admin') {
-								  	echo '<a class="btn btn-warning float-right" href="update.php?id='.$value['id'].'&act=';if(!empty($value['own'])){ echo "ap"; }else{ echo "indi"; } echo '">Edit status</a>'; 
+								  	echo '<a class="btn btn-warning float-right" href="update.php?id='.$value['a_id'].'&act=';if(!empty($value['own'])){ echo "ap"; }else{ echo "indi"; } echo '">Edit status</a>'; 
 								  }
 									 echo 	'<div class="row">
 											<div class="col-4">
 											<h4 >Broker Details</h4>';
-											 	echo '<p><b>Broker Name: </b>'.$value['broker name'].'</p>';
-											 	echo '<p><b>Mobile Number: </b>'.$value['broker mobile'].'</p>';
-											 	echo '<p><b>Alternate Number: </b>'.$value['alternat_mobile'].'</p>';
-											 	echo '<p><b>Email: </b>'.$value['broker email'].'</p>';
-											 	echo '<p><b> State: </b>'."Gujarat".'</p><p><b> City: </b>'."Ahmedabad".'</p><p><b>Area: </b>'."Maninagar".'</p>';
+											 	echo '<p><b>Broker Name: </b>'.$value['fullname'].'</p>';
+											 	echo '<p><b>Mobile Number: </b>'.$value['mobile'].'</p>';
+											 	echo '<p><b>Email: </b>'.$value['email'].'</p>';
+											 	echo '<p><b> State: </b>'.$value['bstate'].'</p><p><b> City: </b>'.$value['bcity'].'</p><p><b>Area: </b>'.$value['barea'].'</p>';
 											 
 
 										echo '</div>
@@ -113,7 +132,7 @@
 													echo '<p><b>Owner/Rented: </b>'.$value['own'].'</p>';
 													echo '<p><b>Purpose: </b>'.$value['purpose'].'</p>';
 												}
-												echo '<p><b>Available Rooms: </b>'.$value['rooms'].'</p>';
+												echo '<p><b>Total Rooms: </b>'.$value['total_rooms'].'</p>';
 											
 
 											 	echo '<p><b>Address: </b>'.$value['address'].'</p><p><b> Landmark: </b>'.$value['landmark'].'</p>';
@@ -126,7 +145,7 @@
 										echo '</div>
 											<div class="col-3">
 											<h4>Other Details</h4>';
-											echo '<p><b>Amenities: </b>'.$value['amenities'].'</p>';
+											echo '<p><b>Amenities: </b>'.$value['accommodation'].'</p>';
 											echo '<p><b>Description: </b>'.$value['description'].'</p>';
 												if($value['vacant'] == 0){ 
 													echo '<div class="alert alert-danger" role="alert"><p><b>Sold</b></p></div>';

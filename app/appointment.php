@@ -452,7 +452,27 @@ function getParentOffset(el, positions)
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav text-uppercase ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="#"><?php echo $_SESSION['fullname']; ?> <?php if($_SESSION['role'] == 'admin'){ echo "(Admin)"; } elseif($_SESSION['role'] == 'broker'){ echo "(Broker)";} ?></a>
+              <a class="nav-link" href="#"><?php 
+                  if($_SESSION['role'] == 'user' OR  $_SESSION['role'] =='admin')
+                  {
+                    echo $_SESSION['u_fullname'];
+                  } 
+                  elseif ($_SESSION['role'] == 'broker') 
+                  {
+                    echo $_SESSION['fullname'];
+                  } 
+                ?> 
+
+                <?php 
+                  if($_SESSION['role'] == 'admin')
+                    { 
+                      echo "(Admin)"; 
+                    } 
+                  elseif($_SESSION['role'] == 'broker')
+                    { 
+                      echo "(Broker)";
+                    } 
+                ?></a>
             </li>
             <li class="nav-item">
               <a href="../auth/logout.php" class="nav-link">Logout</a>

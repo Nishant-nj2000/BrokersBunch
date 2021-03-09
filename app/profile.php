@@ -11,11 +11,11 @@
 				$data1 = $stmt->fetchAll (PDO::FETCH_ASSOC);
 
 
-				$stmt = $connect->prepare("SELECT * FROM room_rental_registrations_apartment  WHERE broker_id = {$_SESSION['broker_id']}");
+				$stmt = $connect->prepare("SELECT * FROM apartments  WHERE broker_id = {$_SESSION['broker_id']}");
 				$stmt->execute();
 				$data2 = $stmt->fetchALL(PDO::FETCH_ASSOC);
 				
-				$stmt = $connect->prepare(" SELECT * FROM room_rental_registrations  WHERE broker_id = {$_SESSION['broker_id']}");
+				$stmt = $connect->prepare(" SELECT * FROM tenaments WHERE broker_id = {$_SESSION['broker_id']}");
 				$stmt->execute();
 				$data3 = $stmt->fetchALL(PDO::FETCH_ASSOC);
 
@@ -31,7 +31,7 @@
 			if($_SESSION['role'] == 'user' ){
 				$stmt = $connect->prepare("SELECT * FROM users WHERE username = '{$_SESSION['username']}'");
 				$stmt->execute();
-				$data1 = $stmt->fetchAll (PDO::FETCH_ASSOC);
+				$data9 = $stmt->fetchAll (PDO::FETCH_ASSOC);
 			}
 		}catch(PDOException $e) {
 			$errMsg = $e->getMessage();
@@ -62,7 +62,27 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav text-uppercase ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="#"><?php echo $_SESSION['fullname']; ?> <?php if($_SESSION['role'] == 'admin'){ echo "(Admin)"; } elseif($_SESSION['role'] == 'broker'){ echo "(Broker)";} ?></a>
+              <a class="nav-link" href="#"><?php 
+              		if($_SESSION['role'] == 'user' OR  $_SESSION['role'] =='admin')
+              		{
+              			echo $_SESSION['u_fullname'];
+              		} 
+              		elseif ($_SESSION['role'] == 'broker') 
+              		{
+              			echo $_SESSION['fullname'];
+              		} 
+              	?> 
+
+              	<?php 
+              		if($_SESSION['role'] == 'admin')
+              			{ 
+              				echo "(Admin)"; 
+              			} 
+              		elseif($_SESSION['role'] == 'broker')
+              			{ 
+              				echo "(Broker)";
+              			} 
+              	?></a>
             </li>
             <li class="nav-item">
               <a href="../auth/logout.php" class="nav-link">Logout</a>
@@ -106,7 +126,7 @@
 												
 													<div class="col-5">
 													<h4 >Other Details</h4>';
-														echo '<p><b> State: </b>'.$value['state'].'</p><p><b> City: </b>'.$value['city'].'</p><p><b>Address: </b>'.$value['address'].'</p>';
+														echo '<p><b> State: </b>'.$value['bstate'].'</p><p><b> City: </b>'.$value['bcity'].'</p><p><b>Address: </b>'.$value['address'].'</p>';
 														echo '<p><b>Role: </b>'.$value['role'].'</p>';
 														echo '<p><b>Status: </b>'.$value['status'].'</p>';
 													echo '</div>
@@ -154,7 +174,7 @@
 													echo '<p><b>Owner: </b>'.$value['own'].'</p>';
 													echo '<p><b>Purpose: </b>'.$value['purpose'].'</p>';
 												}
-												echo '<p><b>Number of  Rooms: </b>'.$value['room no'].'</p>';
+												echo '<p><b>Total Rooms: </b>'.$value['total_rooms'].'</p>';
 													echo '<p><b>Address: </b>'.$value['address'].'</p>';
 														if ($value['image'] !== 'uploads/') {
 											 		# code...
@@ -197,17 +217,17 @@
 				elseif($_SESSION['role'] == 'user' ){
 
 
-						foreach ($data1 as $key => $value) {						
+						foreach ($data9 as $key => $value) {						
 						echo '<div class="card card-inverse card-info mb-4" style="padding:1%;">					
 								  <div class="card-block">';
 								  	echo '<a class="btn btn-warning float-right" href="updatep.php?id='.$value['user_id'].'&act=';if(!empty($value['own'])){ echo "ap"; }else{ echo "indi"; } echo '">Edit Profile</a>'; 
 									 echo 	'<div class="row">
 											<div class="col-4">
 											<h4 >Personal Details</h4>';
-											 	echo '<p><b>Full Name: </b>'.$value['fullname'].'</p>';
-											 	echo '<p><b>Mobile Number: </b>'.$value['mobile'].'</p>';
+											 	echo '<p><b>Full Name: </b>'.$value['u_fullname'].'</p>';
+											 	echo '<p><b>Mobile Number: </b>'.$value['u_mobile'].'</p>';
 											 	echo '<p><b>Username: </b>'.$value['username'].'</p>';
-											 	echo '<p><b>Email: </b>'.$value['email'].'</p>';
+											 	echo '<p><b>Email: </b>'.$value['u_email'].'</p>';
 											 	
 											 	
 										echo '</div>
